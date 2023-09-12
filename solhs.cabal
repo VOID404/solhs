@@ -26,9 +26,9 @@ source-repository head
 library
   exposed-modules:
       Sol
+      Sol.Coerce
       Sol.Encode
       Sol.Pack
-      Sol.ToAST
       Sol.Types
   other-modules:
       Paths_solhs
@@ -57,6 +57,8 @@ test-suite solhs-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Sol.CoerceSpec
+      Sol.PackSpec
       Paths_solhs
   hs-source-dirs:
       test

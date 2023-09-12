@@ -1,37 +1,38 @@
 {-# LANGUAGE UndecidableInstances #-}
 
-module Sol.Types (
-  SolVal (..),
-  SolType (..),
-  SolPacked (..),
-  isDyn,
-) where
+module Sol.Types
+  ( SolVal (..),
+    SolType (..),
+    SolPacked (..),
+    isDyn,
+  )
+where
 
 data SolType
   = ArrayDyn SolType
   | Array Int SolType
   | Tuple [SolType]
   | UInt
+  deriving (Eq)
 
 instance Show SolType where
   show UInt = "uint256"
   show (Tuple l) = "(" ++ f l ++ ")"
-   where
-    f [] = ""
-    f [v] = show v
-    f (v : vs) = show v ++ ", " ++ f vs
+    where
+      f [] = ""
+      f [v] = show v
+      f (v : vs) = show v ++ ", " ++ f vs
   show (Array l t) = show t ++ "[" ++ show l ++ "]"
   show (ArrayDyn t) = show t ++ "[]"
 
 data SolVal
   = SArr [SolVal]
   | SInt Integer
+  deriving (Eq, Show)
 
--- deriving (Show)
-
-instance Show SolVal where
-  show (SInt i) = show i
-  show (SArr arr) = show arr
+-- instance Show SolVal where
+--   show (SInt i) = show i
+--   show (SArr arr) = show arr
 
 instance Semigroup SolVal where
   (SArr xs) <> (SArr ys) = SArr $ xs <> ys
@@ -43,7 +44,7 @@ instance Monoid SolVal where
   mempty = SArr []
 
 data SolPacked = SolPacked SolType SolVal
-  deriving (Show)
+  deriving (Show, Eq)
 
 isDyn :: SolType -> Bool
 isDyn (ArrayDyn _) = True
